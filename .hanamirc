@@ -1,0 +1,3 @@
+project=password_generator
+test=rspec
+template=erb

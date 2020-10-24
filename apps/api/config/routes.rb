@@ -1,0 +1,1 @@
+resources :password, only: [:index]
