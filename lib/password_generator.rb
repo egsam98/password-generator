@@ -1,4 +1,4 @@
-require 'hanami/interactor'
+require 'dry/transaction'
 
 module PasswordGenerator
 end

@@ -4,10 +4,19 @@ module Api
       class Index
         include Api::Action
 
-        def call(_)
-          result = GeneratePassword.new.call
+        params { required(:length).filled(:int?) }
+
+        def call(params)
           self.format = :json
-          self.body = { password: result.password }.to_json
+          return self.body = params.errors.to_json unless params.valid?
+
+          GeneratePassword.new.call(length: params[:length].to_i) do |type|
+            type.success { |result| self.body = result.to_json }
+            type.failure do |err|
+              self.status = 400
+              self.body = { error: err }.to_json
+            end
+          end
         end
       end
     end
