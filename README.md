@@ -30,4 +30,9 @@ How to prepare (create and migrate) DB for `development` and `test` environments
 % HANAMI_ENV=test bundle exec hanami db prepare
 ```
 
+To seed empty database:
+```bash
+rake load_words
+```
+
 Explore Hanami [guides](https://guides.hanamirb.org/), [API docs](http://docs.hanamirb.org/1.3.3/), or jump in [chat](http://chat.hanamirb.org) for help. Enjoy! 🌸
