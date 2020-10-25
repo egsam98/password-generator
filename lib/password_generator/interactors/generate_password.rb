@@ -14,13 +14,25 @@ class GeneratePassword
     end
   end
 
+  try :words_exist?, catch: StandardError
   step :validate
   map :init
   tee :add_numbers
   map :add_alphas
   map :first_underscore_to_digit
 
+  def initialize
+    super
+    @repository = WordRepository.new
+  end
+
   private
+
+  def words_exist?(input)
+    raise 'there\'s no words in database' unless @repository.exists?
+
+    input
+  end
 
   def validate(input)
     res = Validator.new(input).validate
@@ -39,7 +51,7 @@ class GeneratePassword
 
   def add_alphas(password:, length:)
     loop do
-      random_word = WordRepository.new.sample.text
+      random_word = @repository.sample.text
       password.prepend random_word
       return { password: password[password.length - length..password.length] } if
           password.length >= length
@@ -50,6 +62,7 @@ class GeneratePassword
 
   # replace first underscore in password to digit if one exists
   def first_underscore_to_digit(password:)
-    password.tap { |p| p[0] = rand(10).to_s if p[0] == '_' }
+    password[0] = rand(10).to_s if password[0] == '_'
+    { password: password }
   end
 end
