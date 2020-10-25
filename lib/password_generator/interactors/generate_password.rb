@@ -1,10 +1,12 @@
 # Generate user-readable password
 class GeneratePassword
   include Dry::Transaction
+  include Proba
 
   MIN_PASSWORD_LENGTH = 5
   MAX_PASSWORD_LENGTH = 20
   NUMBERS_COUNT_RANGE = (1..2).freeze
+  UPCASE_PERCENT = 20
 
   # Input data validator for this class
   class Validator
@@ -20,6 +22,7 @@ class GeneratePassword
   tee :add_numbers
   map :add_alphas
   map :first_underscore_to_digit
+  map :upcase_chars
 
   def initialize
     super
@@ -64,5 +67,10 @@ class GeneratePassword
   def first_underscore_to_digit(password:)
     password[0] = rand(10).to_s if password[0] == '_'
     { password: password }
+  end
+
+  def upcase_chars(password:)
+    chars = password.chars.each { |char| char.upcase! if maybe_true(UPCASE_PERCENT) }
+    { password: chars.join }
   end
 end

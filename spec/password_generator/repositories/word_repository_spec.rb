@@ -11,8 +11,8 @@ RSpec.describe WordRepository, type: :repository do
   end
 
   describe '.sample' do
-    context 'when 10 rows exist' do
-      before { subject.create(100.times.map { { text: '' } }) }
+    context 'when 1000 rows exist' do
+      before { subject.create(1000.times.map { { text: '' } }) }
       it { expect(subject.sample).to be_an_instance_of Word }
       it 'is expected to be different on every call' do
         expect(subject.sample).to_not eq subject.sample

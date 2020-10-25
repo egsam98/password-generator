@@ -3,7 +3,7 @@ MAX_PASS_LEN = GeneratePassword::MAX_PASSWORD_LENGTH
 
 RSpec.describe GeneratePassword, type: :interactor do
   let(:length) { 15 }
-  let(:word) { Word.new(text: 'some_word') }
+  let(:word) { double(Word, text: 'some_word') }
 
   before do
     allow_any_instance_of(WordRepository).to receive(:sample).and_return word
